@@ -19,4 +19,4 @@ jobs:
           channelId: live
           projectId: wallit-374019
         env:
-          CI: ""
+          CI: false
