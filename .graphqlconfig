@@ -1,0 +1,15 @@
+{
+  "name": "Wallit main GraphQL API",
+  "schemaPath": "generated-api-schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "${env:REACT_APP_GRAPHQL_SERVER_URL}",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": true
+      }
+    }
+  }
+}

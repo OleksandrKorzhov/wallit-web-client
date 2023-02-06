@@ -1,0 +1,1636 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+directive @goField(forceResolver: Boolean, name: String) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @goModel(model: String, models: [String!]) on SCALAR | OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT
+
+"""
+
+An object with an ID.
+Follows the [Relay Global Object Identification Specification](https://relay.dev/graphql/objectidentification.htm)
+"""
+interface Node {
+    "The id of the object."
+    id: ID!
+}
+
+type DiscountOffer implements Node {
+    amount: Int!
+    createdAt: Time!
+    currency: String
+    description: String!
+    discountEligibleUsers: [User!]!
+    discountOfferNotification: Notification
+    expiresAt: Time!
+    id: ID!
+    merchantSpecificIdentification: String!
+    ownerMerchant: Merchant!
+    type: DiscountOfferType!
+}
+
+"A connection to a list of items."
+type DiscountOfferConnection {
+    "A list of edges."
+    edges: [DiscountOfferEdge]
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "Identifies the total count of items in the connection."
+    totalCount: Int!
+}
+
+"An edge in a connection."
+type DiscountOfferEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor!
+    "The item at the end of the edge."
+    node: DiscountOffer
+}
+
+type InstitutionInfo {
+    institutionId: String!
+    name: String!
+}
+
+type LinkTokenHost {
+    linkToken: String!
+}
+
+type Merchant implements Node {
+    discountOffers: [DiscountOffer!]
+    id: ID!
+    name: String!
+}
+
+type Mutation {
+    createDiscountOffer(input: CreateDiscountOfferInput!): DiscountOffer!
+    createLinkToken(input: CreateLinkTokenParams!): LinkTokenHost!
+    createMerchant(input: CreateMerchantInput!): Merchant!
+    exchangeAuthTokenForUserProfile(input: ExchangeAuthTokenForUserProfileInput!): User!
+    exchangePublicToken(input: ExchangePublicTokenParams!): String!
+    markNotificationsAsCheckedInApp(ids: [ID!]!): Boolean!
+    setNotificationChannels(notificationChannel: [UserNotificationChannelPreferencesChanel!]!, userID: ID!): User!
+    setOfferFrequency(frequency: UserOfferFrequency!, userID: ID!): User!
+    setSpendingCategories(spendingCategoryIDs: [ID!]!, userID: ID!): User!
+    updateUser(id: ID!, input: UpdateUserInput): User!
+}
+
+type Notification implements Node {
+    checkedInApp: Boolean!
+    createdAt: Time!
+    id: ID!
+    includedInAggregatedOfferAt: Time
+    notificationDiscountOffer: DiscountOffer
+    notificationRecipient: User!
+    type: NotificationType!
+}
+
+"A connection to a list of items."
+type NotificationConnection {
+    "A list of edges."
+    edges: [NotificationEdge]
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "Identifies the total count of items in the connection."
+    totalCount: Int!
+}
+
+"An edge in a connection."
+type NotificationEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor!
+    "The item at the end of the edge."
+    node: Notification
+}
+
+"""
+
+Information about pagination in a connection.
+https://relay.dev/graphql/connections.htm#sec-undefined.PageInfo
+"""
+type PageInfo {
+    "When paginating forwards, the cursor to continue."
+    endCursor: Cursor
+    "When paginating forwards, are there more items?"
+    hasNextPage: Boolean!
+    "When paginating backwards, are there more items?"
+    hasPreviousPage: Boolean!
+    "When paginating backwards, the cursor to continue."
+    startCursor: Cursor
+}
+
+type PlaidAccountBalances {
+    available: Float!
+    current: Float!
+    isoCurrencyCode: String!
+}
+
+type PlaidAccountInfo {
+    accountId: String!
+    balances: PlaidAccountBalances!
+    mask: String!
+    name: String!
+    officialName: String!
+    transactions(after: Cursor, before: Cursor, first: Int, last: Int, orderBy: TransactionOrder, where: TransactionWhereInput): TransactionConnection!
+    type: String!
+}
+
+type PlaidInstitution implements Node {
+    accounts: [PlaidInstitutionAccount!]
+    id: ID!
+    institutionID: String!
+    name: String!
+    plaidItem: PlaidItem
+}
+
+type PlaidInstitutionAccount implements Node {
+    accountID: String!
+    balanceAvailable: Float!
+    balanceCurrent: Float!
+    balanceIsoCurrencyCode: String!
+    id: ID!
+    mask: String!
+    name: String!
+    officialName: String
+    parentInstitution: PlaidInstitution
+    transactions(
+        "Returns the elements in the list that come after the specified cursor."
+        after: Cursor,
+        "Returns the elements in the list that come before the specified cursor."
+        before: Cursor,
+        "Returns the first _n_ elements from the list."
+        first: Int,
+        "Returns the last _n_ elements from the list."
+        last: Int,
+        "Ordering options for Transactions returned from the connection."
+        orderBy: TransactionOrder,
+        "Filtering options for Transactions returned from the connection."
+        where: TransactionWhereInput
+    ): TransactionConnection!
+    type: String!
+}
+
+"A connection to a list of items."
+type PlaidInstitutionAccountConnection {
+    "A list of edges."
+    edges: [PlaidInstitutionAccountEdge]
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "Identifies the total count of items in the connection."
+    totalCount: Int!
+}
+
+"An edge in a connection."
+type PlaidInstitutionAccountEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor!
+    "The item at the end of the edge."
+    node: PlaidInstitutionAccount
+}
+
+"A connection to a list of items."
+type PlaidInstitutionConnection {
+    "A list of edges."
+    edges: [PlaidInstitutionEdge]
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "Identifies the total count of items in the connection."
+    totalCount: Int!
+}
+
+"An edge in a connection."
+type PlaidInstitutionEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor!
+    "The item at the end of the edge."
+    node: PlaidInstitution
+}
+
+type PlaidItem implements Node {
+    accessToken: String!
+    createdAt: Time!
+    id: ID!
+    institution: PlaidInstitution
+    itemID: String!
+    owner: User
+    transactionSyncs: [TransactionSync!]
+    updatedAt: Time!
+}
+
+"A connection to a list of items."
+type PlaidItemConnection {
+    "A list of edges."
+    edges: [PlaidItemEdge]
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "Identifies the total count of items in the connection."
+    totalCount: Int!
+}
+
+"An edge in a connection."
+type PlaidItemEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor!
+    "The item at the end of the edge."
+    node: PlaidItem
+}
+
+type Query {
+    discountOffers(after: Cursor, before: Cursor, first: Int, last: Int, orderBy: DiscountOfferOrder, where: DiscountOfferWhereInput): DiscountOfferConnection!
+    "Fetches an object given its ID."
+    node(
+        "ID of the object."
+        id: ID!
+    ): Node
+    "Lookup nodes by a list of IDs."
+    nodes(
+        "The list of node IDs."
+        ids: [ID!]!
+    ): [Node]!
+    notificationChannels(after: Cursor, before: Cursor, first: Int, last: Int, where: UserNotificationChannelPreferencesWhereInput): UserNotificationChannelPreferencesConnection!
+    notifications(after: Cursor, before: Cursor, first: Int, last: Int, orderBy: NotificationOrder, where: NotificationWhereInput): NotificationConnection!
+    plaidInstitutionAccounts(after: Cursor, before: Cursor, first: Int, last: Int, where: PlaidInstitutionAccountWhereInput): PlaidInstitutionAccountConnection
+    plaidInstitutions(after: Cursor, before: Cursor, first: Int, last: Int, where: PlaidInstitutionWhereInput): PlaidInstitutionConnection
+    plaidItems(after: Cursor, before: Cursor, first: Int, last: Int, where: PlaidItemWhereInput): PlaidItemConnection!
+    spendingCategories(after: Cursor, before: Cursor, first: Int, last: Int, where: SpendingCategoryWhereInput): SpendingCategoryConnection!
+    transactions(after: Cursor, before: Cursor, first: Int, last: Int, orderBy: TransactionOrder, where: TransactionWhereInput): TransactionConnection!
+}
+
+type SpendingCategory implements Node {
+    categoryID: String!
+    categoryTransactions: [Transaction!]
+    createdAt: Time!
+    id: ID!
+    interestedUsers: [User!]
+    name: String!
+}
+
+"A connection to a list of items."
+type SpendingCategoryConnection {
+    "A list of edges."
+    edges: [SpendingCategoryEdge]
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "Identifies the total count of items in the connection."
+    totalCount: Int!
+}
+
+"An edge in a connection."
+type SpendingCategoryEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor!
+    "The item at the end of the edge."
+    node: SpendingCategory
+}
+
+type Subscription {
+    notification(ownerID: ID!): Notification!
+}
+
+type Transaction implements Node {
+    accountOwner: String!
+    amount: Float!
+    authorizedDate: String
+    authorizedDatetime: Time
+    category: String
+    categoryID: String
+    checkNumber: String!
+    createdAt: Time!
+    date: String!
+    datetime: Time
+    financialAccountID: String!
+    id: ID!
+    institutionAccount: PlaidInstitutionAccount
+    isoCurrencyCode: String!
+    locationAddress: String!
+    locationCity: String!
+    locationLat: Float!
+    locationLon: Float!
+    locationPostalCode: String!
+    locationRegion: String!
+    locationStoreNumber: String!
+    merchantName: String!
+    name: String!
+    paymentChannel: String!
+    pending: Boolean!
+    pendingTransactionID: String!
+    transactionCategories: [SpendingCategory!]
+    transactionCode: String!
+    transactionID: String!
+    unofficialCurrencyCode: String!
+}
+
+"A connection to a list of items."
+type TransactionConnection {
+    "A list of edges."
+    edges: [TransactionEdge]
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "Identifies the total count of items in the connection."
+    totalCount: Int!
+}
+
+"An edge in a connection."
+type TransactionEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor!
+    "The item at the end of the edge."
+    node: Transaction
+}
+
+type TransactionSync implements Node {
+    createdAt: Time!
+    cursor: String!
+    id: ID!
+    item: PlaidItem
+}
+
+type User implements Node {
+    availableDiscountOffers: [DiscountOffer!]
+    homeCity: String
+    homeCountry: String
+    homeState: String
+    id: ID!
+    identityProviderID: String
+    notificationChannels: [UserNotificationChannelPreferences!]
+    notifications: [Notification!]
+    offerFrequency: UserOfferFrequency!
+    plaidItems: [PlaidItem!]
+    spendingCategories: [SpendingCategory!]
+}
+
+type UserNotificationChannelPreferences implements Node {
+    chanel: UserNotificationChannelPreferencesChanel!
+    chanelUsers: User
+    id: ID!
+}
+
+"A connection to a list of items."
+type UserNotificationChannelPreferencesConnection {
+    "A list of edges."
+    edges: [UserNotificationChannelPreferencesEdge]
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "Identifies the total count of items in the connection."
+    totalCount: Int!
+}
+
+"An edge in a connection."
+type UserNotificationChannelPreferencesEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor!
+    "The item at the end of the edge."
+    node: UserNotificationChannelPreferences
+}
+
+"Properties by which DiscountOffer connections can be ordered."
+enum DiscountOfferOrderField {
+    CREATED_AT
+}
+
+"DiscountOfferType is enum for the field type"
+enum DiscountOfferType {
+    FIXED_AMOUNT
+    PERCENT_FROM_PRICE
+}
+
+"Properties by which Notification connections can be ordered."
+enum NotificationOrderField {
+    CREATED_AT
+}
+
+"NotificationType is enum for the field type"
+enum NotificationType {
+    INSIGHTS
+    OFFER
+}
+
+"Possible directions in which to order a list of items when provided an `orderBy` argument."
+enum OrderDirection {
+    "Specifies an ascending order for a given `orderBy` argument."
+    ASC
+    "Specifies a descending order for a given `orderBy` argument."
+    DESC
+}
+
+"Properties by which PlaidItem connections can be ordered."
+enum PlaidItemOrderField {
+    CREATED_AT
+    UPDATED_AT
+}
+
+"Properties by which Transaction connections can be ordered."
+enum TransactionOrderField {
+    DATE
+    DATETIME
+}
+
+"UserNotificationChannelPreferencesChanel is enum for the field chanel"
+enum UserNotificationChannelPreferencesChanel {
+    EMAIL
+    PUSH
+    SMS
+}
+
+"UserOfferFrequency is enum for the field offer_frequency"
+enum UserOfferFrequency {
+    ASS_SOON_AS_POSSIBLE
+    BI_WEEKLY
+    DAILY
+    MONTHLY
+    NO_OFFERS
+    WEEKLY
+}
+
+"""
+
+Define a Relay Cursor type:
+https://relay.dev/graphql/connections.htm#sec-Cursor
+"""
+scalar Cursor
+
+"The builtin Time type"
+scalar Time
+
+"""
+
+CreateDiscountOfferInput is used for create DiscountOffer object.
+Input was generated by ent.
+"""
+input CreateDiscountOfferInput {
+    amount: Int!
+    currency: String
+    description: String!
+    discountEligibleUserIDs: [ID!]!
+    discountOfferNotificationID: ID
+    expiresAt: Time!
+    merchantSpecificIdentification: String!
+    ownerMerchantID: ID!
+    type: DiscountOfferType
+}
+
+input CreateLinkTokenParams {
+    userId: ID!
+}
+
+"""
+
+CreateMerchantInput is used for create Merchant object.
+Input was generated by ent.
+"""
+input CreateMerchantInput {
+    discountOfferIDs: [ID!]
+    name: String!
+}
+
+"""
+
+CreateUserInput is used for create User object.
+Input was generated by ent.
+"""
+input CreateUserInput {
+    homeCity: String
+    homeCountry: String
+    homeState: String
+    identityProviderID: String
+    offerFrequency: UserOfferFrequency
+}
+
+"Ordering options for DiscountOffer connections"
+input DiscountOfferOrder {
+    "The ordering direction."
+    direction: OrderDirection! = ASC
+    "The field by which to order DiscountOffers."
+    field: DiscountOfferOrderField!
+}
+
+"""
+
+DiscountOfferWhereInput is used for filtering DiscountOffer objects.
+Input was generated by ent.
+"""
+input DiscountOfferWhereInput {
+    "amount field predicates"
+    amount: Int
+    amountGT: Int
+    amountGTE: Int
+    amountIn: [Int!]
+    amountLT: Int
+    amountLTE: Int
+    amountNEQ: Int
+    amountNotIn: [Int!]
+    and: [DiscountOfferWhereInput!]
+    "created_at field predicates"
+    createdAt: Time
+    createdAtGT: Time
+    createdAtGTE: Time
+    createdAtIn: [Time!]
+    createdAtLT: Time
+    createdAtLTE: Time
+    createdAtNEQ: Time
+    createdAtNotIn: [Time!]
+    "currency field predicates"
+    currency: String
+    currencyContains: String
+    currencyContainsFold: String
+    currencyEqualFold: String
+    currencyGT: String
+    currencyGTE: String
+    currencyHasPrefix: String
+    currencyHasSuffix: String
+    currencyIn: [String!]
+    currencyIsNil: Boolean
+    currencyLT: String
+    currencyLTE: String
+    currencyNEQ: String
+    currencyNotIn: [String!]
+    currencyNotNil: Boolean
+    "description field predicates"
+    description: String
+    descriptionContains: String
+    descriptionContainsFold: String
+    descriptionEqualFold: String
+    descriptionGT: String
+    descriptionGTE: String
+    descriptionHasPrefix: String
+    descriptionHasSuffix: String
+    descriptionIn: [String!]
+    descriptionLT: String
+    descriptionLTE: String
+    descriptionNEQ: String
+    descriptionNotIn: [String!]
+    "expires_at field predicates"
+    expiresAt: Time
+    expiresAtGT: Time
+    expiresAtGTE: Time
+    expiresAtIn: [Time!]
+    expiresAtLT: Time
+    expiresAtLTE: Time
+    expiresAtNEQ: Time
+    expiresAtNotIn: [Time!]
+    "discount_eligible_users edge predicates"
+    hasDiscountEligibleUsers: Boolean
+    hasDiscountEligibleUsersWith: [UserWhereInput!]
+    "discount_offer_notification edge predicates"
+    hasDiscountOfferNotification: Boolean
+    hasDiscountOfferNotificationWith: [NotificationWhereInput!]
+    "owner_merchant edge predicates"
+    hasOwnerMerchant: Boolean
+    hasOwnerMerchantWith: [MerchantWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "merchant_specific_identification field predicates"
+    merchantSpecificIdentification: String
+    merchantSpecificIdentificationContains: String
+    merchantSpecificIdentificationContainsFold: String
+    merchantSpecificIdentificationEqualFold: String
+    merchantSpecificIdentificationGT: String
+    merchantSpecificIdentificationGTE: String
+    merchantSpecificIdentificationHasPrefix: String
+    merchantSpecificIdentificationHasSuffix: String
+    merchantSpecificIdentificationIn: [String!]
+    merchantSpecificIdentificationLT: String
+    merchantSpecificIdentificationLTE: String
+    merchantSpecificIdentificationNEQ: String
+    merchantSpecificIdentificationNotIn: [String!]
+    not: DiscountOfferWhereInput
+    or: [DiscountOfferWhereInput!]
+    "type field predicates"
+    type: DiscountOfferType
+    typeIn: [DiscountOfferType!]
+    typeNEQ: DiscountOfferType
+    typeNotIn: [DiscountOfferType!]
+}
+
+input ExchangeAuthTokenForUserProfileInput {
+    identityProviderID: String!
+}
+
+input ExchangePublicTokenParams {
+    publicToken: String!
+    userId: ID!
+}
+
+"""
+
+MerchantWhereInput is used for filtering Merchant objects.
+Input was generated by ent.
+"""
+input MerchantWhereInput {
+    and: [MerchantWhereInput!]
+    "discount_offers edge predicates"
+    hasDiscountOffers: Boolean
+    hasDiscountOffersWith: [DiscountOfferWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "name field predicates"
+    name: String
+    nameContains: String
+    nameContainsFold: String
+    nameEqualFold: String
+    nameGT: String
+    nameGTE: String
+    nameHasPrefix: String
+    nameHasSuffix: String
+    nameIn: [String!]
+    nameLT: String
+    nameLTE: String
+    nameNEQ: String
+    nameNotIn: [String!]
+    not: MerchantWhereInput
+    or: [MerchantWhereInput!]
+}
+
+"Ordering options for Notification connections"
+input NotificationOrder {
+    "The ordering direction."
+    direction: OrderDirection! = ASC
+    "The field by which to order Notifications."
+    field: NotificationOrderField!
+}
+
+"""
+
+NotificationWhereInput is used for filtering Notification objects.
+Input was generated by ent.
+"""
+input NotificationWhereInput {
+    and: [NotificationWhereInput!]
+    "checked_in_app field predicates"
+    checkedInApp: Boolean
+    checkedInAppNEQ: Boolean
+    "created_at field predicates"
+    createdAt: Time
+    createdAtGT: Time
+    createdAtGTE: Time
+    createdAtIn: [Time!]
+    createdAtLT: Time
+    createdAtLTE: Time
+    createdAtNEQ: Time
+    createdAtNotIn: [Time!]
+    "notification_discount_offer edge predicates"
+    hasNotificationDiscountOffer: Boolean
+    hasNotificationDiscountOfferWith: [DiscountOfferWhereInput!]
+    "notification_recipient edge predicates"
+    hasNotificationRecipient: Boolean
+    hasNotificationRecipientWith: [UserWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "included_in_aggregated_offer_at field predicates"
+    includedInAggregatedOfferAt: Time
+    includedInAggregatedOfferAtGT: Time
+    includedInAggregatedOfferAtGTE: Time
+    includedInAggregatedOfferAtIn: [Time!]
+    includedInAggregatedOfferAtIsNil: Boolean
+    includedInAggregatedOfferAtLT: Time
+    includedInAggregatedOfferAtLTE: Time
+    includedInAggregatedOfferAtNEQ: Time
+    includedInAggregatedOfferAtNotIn: [Time!]
+    includedInAggregatedOfferAtNotNil: Boolean
+    not: NotificationWhereInput
+    or: [NotificationWhereInput!]
+    "type field predicates"
+    type: NotificationType
+    typeIn: [NotificationType!]
+    typeNEQ: NotificationType
+    typeNotIn: [NotificationType!]
+}
+
+"""
+
+PlaidInstitutionAccountWhereInput is used for filtering PlaidInstitutionAccount objects.
+Input was generated by ent.
+"""
+input PlaidInstitutionAccountWhereInput {
+    "account_id field predicates"
+    accountID: String
+    accountIDContains: String
+    accountIDContainsFold: String
+    accountIDEqualFold: String
+    accountIDGT: String
+    accountIDGTE: String
+    accountIDHasPrefix: String
+    accountIDHasSuffix: String
+    accountIDIn: [String!]
+    accountIDLT: String
+    accountIDLTE: String
+    accountIDNEQ: String
+    accountIDNotIn: [String!]
+    and: [PlaidInstitutionAccountWhereInput!]
+    "balance_available field predicates"
+    balanceAvailable: Float
+    balanceAvailableGT: Float
+    balanceAvailableGTE: Float
+    balanceAvailableIn: [Float!]
+    balanceAvailableLT: Float
+    balanceAvailableLTE: Float
+    balanceAvailableNEQ: Float
+    balanceAvailableNotIn: [Float!]
+    "balance_current field predicates"
+    balanceCurrent: Float
+    balanceCurrentGT: Float
+    balanceCurrentGTE: Float
+    balanceCurrentIn: [Float!]
+    balanceCurrentLT: Float
+    balanceCurrentLTE: Float
+    balanceCurrentNEQ: Float
+    balanceCurrentNotIn: [Float!]
+    "balance_iso_currency_code field predicates"
+    balanceIsoCurrencyCode: String
+    balanceIsoCurrencyCodeContains: String
+    balanceIsoCurrencyCodeContainsFold: String
+    balanceIsoCurrencyCodeEqualFold: String
+    balanceIsoCurrencyCodeGT: String
+    balanceIsoCurrencyCodeGTE: String
+    balanceIsoCurrencyCodeHasPrefix: String
+    balanceIsoCurrencyCodeHasSuffix: String
+    balanceIsoCurrencyCodeIn: [String!]
+    balanceIsoCurrencyCodeLT: String
+    balanceIsoCurrencyCodeLTE: String
+    balanceIsoCurrencyCodeNEQ: String
+    balanceIsoCurrencyCodeNotIn: [String!]
+    "parent_institution edge predicates"
+    hasParentInstitution: Boolean
+    hasParentInstitutionWith: [PlaidInstitutionWhereInput!]
+    "transactions edge predicates"
+    hasTransactions: Boolean
+    hasTransactionsWith: [TransactionWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "mask field predicates"
+    mask: String
+    maskContains: String
+    maskContainsFold: String
+    maskEqualFold: String
+    maskGT: String
+    maskGTE: String
+    maskHasPrefix: String
+    maskHasSuffix: String
+    maskIn: [String!]
+    maskLT: String
+    maskLTE: String
+    maskNEQ: String
+    maskNotIn: [String!]
+    "name field predicates"
+    name: String
+    nameContains: String
+    nameContainsFold: String
+    nameEqualFold: String
+    nameGT: String
+    nameGTE: String
+    nameHasPrefix: String
+    nameHasSuffix: String
+    nameIn: [String!]
+    nameLT: String
+    nameLTE: String
+    nameNEQ: String
+    nameNotIn: [String!]
+    not: PlaidInstitutionAccountWhereInput
+    "official_name field predicates"
+    officialName: String
+    officialNameContains: String
+    officialNameContainsFold: String
+    officialNameEqualFold: String
+    officialNameGT: String
+    officialNameGTE: String
+    officialNameHasPrefix: String
+    officialNameHasSuffix: String
+    officialNameIn: [String!]
+    officialNameIsNil: Boolean
+    officialNameLT: String
+    officialNameLTE: String
+    officialNameNEQ: String
+    officialNameNotIn: [String!]
+    officialNameNotNil: Boolean
+    or: [PlaidInstitutionAccountWhereInput!]
+    "type field predicates"
+    type: String
+    typeContains: String
+    typeContainsFold: String
+    typeEqualFold: String
+    typeGT: String
+    typeGTE: String
+    typeHasPrefix: String
+    typeHasSuffix: String
+    typeIn: [String!]
+    typeLT: String
+    typeLTE: String
+    typeNEQ: String
+    typeNotIn: [String!]
+}
+
+"""
+
+PlaidInstitutionWhereInput is used for filtering PlaidInstitution objects.
+Input was generated by ent.
+"""
+input PlaidInstitutionWhereInput {
+    and: [PlaidInstitutionWhereInput!]
+    "accounts edge predicates"
+    hasAccounts: Boolean
+    hasAccountsWith: [PlaidInstitutionAccountWhereInput!]
+    "plaid_item edge predicates"
+    hasPlaidItem: Boolean
+    hasPlaidItemWith: [PlaidItemWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "institution_id field predicates"
+    institutionID: String
+    institutionIDContains: String
+    institutionIDContainsFold: String
+    institutionIDEqualFold: String
+    institutionIDGT: String
+    institutionIDGTE: String
+    institutionIDHasPrefix: String
+    institutionIDHasSuffix: String
+    institutionIDIn: [String!]
+    institutionIDLT: String
+    institutionIDLTE: String
+    institutionIDNEQ: String
+    institutionIDNotIn: [String!]
+    "name field predicates"
+    name: String
+    nameContains: String
+    nameContainsFold: String
+    nameEqualFold: String
+    nameGT: String
+    nameGTE: String
+    nameHasPrefix: String
+    nameHasSuffix: String
+    nameIn: [String!]
+    nameLT: String
+    nameLTE: String
+    nameNEQ: String
+    nameNotIn: [String!]
+    not: PlaidInstitutionWhereInput
+    or: [PlaidInstitutionWhereInput!]
+}
+
+"Ordering options for PlaidItem connections"
+input PlaidItemOrder {
+    "The ordering direction."
+    direction: OrderDirection! = ASC
+    "The field by which to order PlaidItems."
+    field: PlaidItemOrderField!
+}
+
+"""
+
+PlaidItemWhereInput is used for filtering PlaidItem objects.
+Input was generated by ent.
+"""
+input PlaidItemWhereInput {
+    "access_token field predicates"
+    accessToken: String
+    accessTokenContains: String
+    accessTokenContainsFold: String
+    accessTokenEqualFold: String
+    accessTokenGT: String
+    accessTokenGTE: String
+    accessTokenHasPrefix: String
+    accessTokenHasSuffix: String
+    accessTokenIn: [String!]
+    accessTokenLT: String
+    accessTokenLTE: String
+    accessTokenNEQ: String
+    accessTokenNotIn: [String!]
+    and: [PlaidItemWhereInput!]
+    "created_at field predicates"
+    createdAt: Time
+    createdAtGT: Time
+    createdAtGTE: Time
+    createdAtIn: [Time!]
+    createdAtLT: Time
+    createdAtLTE: Time
+    createdAtNEQ: Time
+    createdAtNotIn: [Time!]
+    "institution edge predicates"
+    hasInstitution: Boolean
+    hasInstitutionWith: [PlaidInstitutionWhereInput!]
+    "owner edge predicates"
+    hasOwner: Boolean
+    hasOwnerWith: [UserWhereInput!]
+    "transaction_syncs edge predicates"
+    hasTransactionSyncs: Boolean
+    hasTransactionSyncsWith: [TransactionSyncWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "item_id field predicates"
+    itemID: String
+    itemIDContains: String
+    itemIDContainsFold: String
+    itemIDEqualFold: String
+    itemIDGT: String
+    itemIDGTE: String
+    itemIDHasPrefix: String
+    itemIDHasSuffix: String
+    itemIDIn: [String!]
+    itemIDLT: String
+    itemIDLTE: String
+    itemIDNEQ: String
+    itemIDNotIn: [String!]
+    not: PlaidItemWhereInput
+    or: [PlaidItemWhereInput!]
+    "updated_at field predicates"
+    updatedAt: Time
+    updatedAtGT: Time
+    updatedAtGTE: Time
+    updatedAtIn: [Time!]
+    updatedAtLT: Time
+    updatedAtLTE: Time
+    updatedAtNEQ: Time
+    updatedAtNotIn: [Time!]
+}
+
+"""
+
+SpendingCategoryWhereInput is used for filtering SpendingCategory objects.
+Input was generated by ent.
+"""
+input SpendingCategoryWhereInput {
+    and: [SpendingCategoryWhereInput!]
+    "category_id field predicates"
+    categoryID: String
+    categoryIDContains: String
+    categoryIDContainsFold: String
+    categoryIDEqualFold: String
+    categoryIDGT: String
+    categoryIDGTE: String
+    categoryIDHasPrefix: String
+    categoryIDHasSuffix: String
+    categoryIDIn: [String!]
+    categoryIDLT: String
+    categoryIDLTE: String
+    categoryIDNEQ: String
+    categoryIDNotIn: [String!]
+    "created_at field predicates"
+    createdAt: Time
+    createdAtGT: Time
+    createdAtGTE: Time
+    createdAtIn: [Time!]
+    createdAtLT: Time
+    createdAtLTE: Time
+    createdAtNEQ: Time
+    createdAtNotIn: [Time!]
+    "category_transactions edge predicates"
+    hasCategoryTransactions: Boolean
+    hasCategoryTransactionsWith: [TransactionWhereInput!]
+    "interested_users edge predicates"
+    hasInterestedUsers: Boolean
+    hasInterestedUsersWith: [UserWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "name field predicates"
+    name: String
+    nameContains: String
+    nameContainsFold: String
+    nameEqualFold: String
+    nameGT: String
+    nameGTE: String
+    nameHasPrefix: String
+    nameHasSuffix: String
+    nameIn: [String!]
+    nameLT: String
+    nameLTE: String
+    nameNEQ: String
+    nameNotIn: [String!]
+    not: SpendingCategoryWhereInput
+    or: [SpendingCategoryWhereInput!]
+}
+
+"Ordering options for Transaction connections"
+input TransactionOrder {
+    "The ordering direction."
+    direction: OrderDirection! = ASC
+    "The field by which to order Transactions."
+    field: TransactionOrderField!
+}
+
+"""
+
+TransactionSyncWhereInput is used for filtering TransactionSync objects.
+Input was generated by ent.
+"""
+input TransactionSyncWhereInput {
+    and: [TransactionSyncWhereInput!]
+    "created_at field predicates"
+    createdAt: Time
+    createdAtGT: Time
+    createdAtGTE: Time
+    createdAtIn: [Time!]
+    createdAtLT: Time
+    createdAtLTE: Time
+    createdAtNEQ: Time
+    createdAtNotIn: [Time!]
+    "cursor field predicates"
+    cursor: String
+    cursorContains: String
+    cursorContainsFold: String
+    cursorEqualFold: String
+    cursorGT: String
+    cursorGTE: String
+    cursorHasPrefix: String
+    cursorHasSuffix: String
+    cursorIn: [String!]
+    cursorLT: String
+    cursorLTE: String
+    cursorNEQ: String
+    cursorNotIn: [String!]
+    "item edge predicates"
+    hasItem: Boolean
+    hasItemWith: [PlaidItemWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    not: TransactionSyncWhereInput
+    or: [TransactionSyncWhereInput!]
+}
+
+"""
+
+TransactionWhereInput is used for filtering Transaction objects.
+Input was generated by ent.
+"""
+input TransactionWhereInput {
+    "account_owner field predicates"
+    accountOwner: String
+    accountOwnerContains: String
+    accountOwnerContainsFold: String
+    accountOwnerEqualFold: String
+    accountOwnerGT: String
+    accountOwnerGTE: String
+    accountOwnerHasPrefix: String
+    accountOwnerHasSuffix: String
+    accountOwnerIn: [String!]
+    accountOwnerLT: String
+    accountOwnerLTE: String
+    accountOwnerNEQ: String
+    accountOwnerNotIn: [String!]
+    "amount field predicates"
+    amount: Float
+    amountGT: Float
+    amountGTE: Float
+    amountIn: [Float!]
+    amountLT: Float
+    amountLTE: Float
+    amountNEQ: Float
+    amountNotIn: [Float!]
+    and: [TransactionWhereInput!]
+    "authorized_date field predicates"
+    authorizedDate: String
+    authorizedDateContains: String
+    authorizedDateContainsFold: String
+    authorizedDateEqualFold: String
+    authorizedDateGT: String
+    authorizedDateGTE: String
+    authorizedDateHasPrefix: String
+    authorizedDateHasSuffix: String
+    authorizedDateIn: [String!]
+    authorizedDateIsNil: Boolean
+    authorizedDateLT: String
+    authorizedDateLTE: String
+    authorizedDateNEQ: String
+    authorizedDateNotIn: [String!]
+    authorizedDateNotNil: Boolean
+    "authorized_datetime field predicates"
+    authorizedDatetime: Time
+    authorizedDatetimeGT: Time
+    authorizedDatetimeGTE: Time
+    authorizedDatetimeIn: [Time!]
+    authorizedDatetimeIsNil: Boolean
+    authorizedDatetimeLT: Time
+    authorizedDatetimeLTE: Time
+    authorizedDatetimeNEQ: Time
+    authorizedDatetimeNotIn: [Time!]
+    authorizedDatetimeNotNil: Boolean
+    "category field predicates"
+    category: String
+    categoryContains: String
+    categoryContainsFold: String
+    categoryEqualFold: String
+    categoryGT: String
+    categoryGTE: String
+    categoryHasPrefix: String
+    categoryHasSuffix: String
+    "category_id field predicates"
+    categoryID: String
+    categoryIDContains: String
+    categoryIDContainsFold: String
+    categoryIDEqualFold: String
+    categoryIDGT: String
+    categoryIDGTE: String
+    categoryIDHasPrefix: String
+    categoryIDHasSuffix: String
+    categoryIDIn: [String!]
+    categoryIDIsNil: Boolean
+    categoryIDLT: String
+    categoryIDLTE: String
+    categoryIDNEQ: String
+    categoryIDNotIn: [String!]
+    categoryIDNotNil: Boolean
+    categoryIn: [String!]
+    categoryIsNil: Boolean
+    categoryLT: String
+    categoryLTE: String
+    categoryNEQ: String
+    categoryNotIn: [String!]
+    categoryNotNil: Boolean
+    "check_number field predicates"
+    checkNumber: String
+    checkNumberContains: String
+    checkNumberContainsFold: String
+    checkNumberEqualFold: String
+    checkNumberGT: String
+    checkNumberGTE: String
+    checkNumberHasPrefix: String
+    checkNumberHasSuffix: String
+    checkNumberIn: [String!]
+    checkNumberLT: String
+    checkNumberLTE: String
+    checkNumberNEQ: String
+    checkNumberNotIn: [String!]
+    "created_at field predicates"
+    createdAt: Time
+    createdAtGT: Time
+    createdAtGTE: Time
+    createdAtIn: [Time!]
+    createdAtLT: Time
+    createdAtLTE: Time
+    createdAtNEQ: Time
+    createdAtNotIn: [Time!]
+    "date field predicates"
+    date: String
+    dateContains: String
+    dateContainsFold: String
+    dateEqualFold: String
+    dateGT: String
+    dateGTE: String
+    dateHasPrefix: String
+    dateHasSuffix: String
+    dateIn: [String!]
+    dateLT: String
+    dateLTE: String
+    dateNEQ: String
+    dateNotIn: [String!]
+    "datetime field predicates"
+    datetime: Time
+    datetimeGT: Time
+    datetimeGTE: Time
+    datetimeIn: [Time!]
+    datetimeIsNil: Boolean
+    datetimeLT: Time
+    datetimeLTE: Time
+    datetimeNEQ: Time
+    datetimeNotIn: [Time!]
+    datetimeNotNil: Boolean
+    "financial_account_id field predicates"
+    financialAccountID: String
+    financialAccountIDContains: String
+    financialAccountIDContainsFold: String
+    financialAccountIDEqualFold: String
+    financialAccountIDGT: String
+    financialAccountIDGTE: String
+    financialAccountIDHasPrefix: String
+    financialAccountIDHasSuffix: String
+    financialAccountIDIn: [String!]
+    financialAccountIDLT: String
+    financialAccountIDLTE: String
+    financialAccountIDNEQ: String
+    financialAccountIDNotIn: [String!]
+    "institution_account edge predicates"
+    hasInstitutionAccount: Boolean
+    hasInstitutionAccountWith: [PlaidInstitutionAccountWhereInput!]
+    "transaction_categories edge predicates"
+    hasTransactionCategories: Boolean
+    hasTransactionCategoriesWith: [SpendingCategoryWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "iso_currency_code field predicates"
+    isoCurrencyCode: String
+    isoCurrencyCodeContains: String
+    isoCurrencyCodeContainsFold: String
+    isoCurrencyCodeEqualFold: String
+    isoCurrencyCodeGT: String
+    isoCurrencyCodeGTE: String
+    isoCurrencyCodeHasPrefix: String
+    isoCurrencyCodeHasSuffix: String
+    isoCurrencyCodeIn: [String!]
+    isoCurrencyCodeLT: String
+    isoCurrencyCodeLTE: String
+    isoCurrencyCodeNEQ: String
+    isoCurrencyCodeNotIn: [String!]
+    "location_address field predicates"
+    locationAddress: String
+    locationAddressContains: String
+    locationAddressContainsFold: String
+    locationAddressEqualFold: String
+    locationAddressGT: String
+    locationAddressGTE: String
+    locationAddressHasPrefix: String
+    locationAddressHasSuffix: String
+    locationAddressIn: [String!]
+    locationAddressLT: String
+    locationAddressLTE: String
+    locationAddressNEQ: String
+    locationAddressNotIn: [String!]
+    "location_city field predicates"
+    locationCity: String
+    locationCityContains: String
+    locationCityContainsFold: String
+    locationCityEqualFold: String
+    locationCityGT: String
+    locationCityGTE: String
+    locationCityHasPrefix: String
+    locationCityHasSuffix: String
+    locationCityIn: [String!]
+    locationCityLT: String
+    locationCityLTE: String
+    locationCityNEQ: String
+    locationCityNotIn: [String!]
+    "location_lat field predicates"
+    locationLat: Float
+    locationLatGT: Float
+    locationLatGTE: Float
+    locationLatIn: [Float!]
+    locationLatLT: Float
+    locationLatLTE: Float
+    locationLatNEQ: Float
+    locationLatNotIn: [Float!]
+    "location_lon field predicates"
+    locationLon: Float
+    locationLonGT: Float
+    locationLonGTE: Float
+    locationLonIn: [Float!]
+    locationLonLT: Float
+    locationLonLTE: Float
+    locationLonNEQ: Float
+    locationLonNotIn: [Float!]
+    "location_postal_code field predicates"
+    locationPostalCode: String
+    locationPostalCodeContains: String
+    locationPostalCodeContainsFold: String
+    locationPostalCodeEqualFold: String
+    locationPostalCodeGT: String
+    locationPostalCodeGTE: String
+    locationPostalCodeHasPrefix: String
+    locationPostalCodeHasSuffix: String
+    locationPostalCodeIn: [String!]
+    locationPostalCodeLT: String
+    locationPostalCodeLTE: String
+    locationPostalCodeNEQ: String
+    locationPostalCodeNotIn: [String!]
+    "location_region field predicates"
+    locationRegion: String
+    locationRegionContains: String
+    locationRegionContainsFold: String
+    locationRegionEqualFold: String
+    locationRegionGT: String
+    locationRegionGTE: String
+    locationRegionHasPrefix: String
+    locationRegionHasSuffix: String
+    locationRegionIn: [String!]
+    locationRegionLT: String
+    locationRegionLTE: String
+    locationRegionNEQ: String
+    locationRegionNotIn: [String!]
+    "location_store_number field predicates"
+    locationStoreNumber: String
+    locationStoreNumberContains: String
+    locationStoreNumberContainsFold: String
+    locationStoreNumberEqualFold: String
+    locationStoreNumberGT: String
+    locationStoreNumberGTE: String
+    locationStoreNumberHasPrefix: String
+    locationStoreNumberHasSuffix: String
+    locationStoreNumberIn: [String!]
+    locationStoreNumberLT: String
+    locationStoreNumberLTE: String
+    locationStoreNumberNEQ: String
+    locationStoreNumberNotIn: [String!]
+    "merchant_name field predicates"
+    merchantName: String
+    merchantNameContains: String
+    merchantNameContainsFold: String
+    merchantNameEqualFold: String
+    merchantNameGT: String
+    merchantNameGTE: String
+    merchantNameHasPrefix: String
+    merchantNameHasSuffix: String
+    merchantNameIn: [String!]
+    merchantNameLT: String
+    merchantNameLTE: String
+    merchantNameNEQ: String
+    merchantNameNotIn: [String!]
+    "name field predicates"
+    name: String
+    nameContains: String
+    nameContainsFold: String
+    nameEqualFold: String
+    nameGT: String
+    nameGTE: String
+    nameHasPrefix: String
+    nameHasSuffix: String
+    nameIn: [String!]
+    nameLT: String
+    nameLTE: String
+    nameNEQ: String
+    nameNotIn: [String!]
+    not: TransactionWhereInput
+    or: [TransactionWhereInput!]
+    "payment_channel field predicates"
+    paymentChannel: String
+    paymentChannelContains: String
+    paymentChannelContainsFold: String
+    paymentChannelEqualFold: String
+    paymentChannelGT: String
+    paymentChannelGTE: String
+    paymentChannelHasPrefix: String
+    paymentChannelHasSuffix: String
+    paymentChannelIn: [String!]
+    paymentChannelLT: String
+    paymentChannelLTE: String
+    paymentChannelNEQ: String
+    paymentChannelNotIn: [String!]
+    "pending field predicates"
+    pending: Boolean
+    pendingNEQ: Boolean
+    "pending_transaction_id field predicates"
+    pendingTransactionID: String
+    pendingTransactionIDContains: String
+    pendingTransactionIDContainsFold: String
+    pendingTransactionIDEqualFold: String
+    pendingTransactionIDGT: String
+    pendingTransactionIDGTE: String
+    pendingTransactionIDHasPrefix: String
+    pendingTransactionIDHasSuffix: String
+    pendingTransactionIDIn: [String!]
+    pendingTransactionIDLT: String
+    pendingTransactionIDLTE: String
+    pendingTransactionIDNEQ: String
+    pendingTransactionIDNotIn: [String!]
+    "transaction_code field predicates"
+    transactionCode: String
+    transactionCodeContains: String
+    transactionCodeContainsFold: String
+    transactionCodeEqualFold: String
+    transactionCodeGT: String
+    transactionCodeGTE: String
+    transactionCodeHasPrefix: String
+    transactionCodeHasSuffix: String
+    transactionCodeIn: [String!]
+    transactionCodeLT: String
+    transactionCodeLTE: String
+    transactionCodeNEQ: String
+    transactionCodeNotIn: [String!]
+    "transaction_id field predicates"
+    transactionID: String
+    transactionIDContains: String
+    transactionIDContainsFold: String
+    transactionIDEqualFold: String
+    transactionIDGT: String
+    transactionIDGTE: String
+    transactionIDHasPrefix: String
+    transactionIDHasSuffix: String
+    transactionIDIn: [String!]
+    transactionIDLT: String
+    transactionIDLTE: String
+    transactionIDNEQ: String
+    transactionIDNotIn: [String!]
+    "unofficial_currency_code field predicates"
+    unofficialCurrencyCode: String
+    unofficialCurrencyCodeContains: String
+    unofficialCurrencyCodeContainsFold: String
+    unofficialCurrencyCodeEqualFold: String
+    unofficialCurrencyCodeGT: String
+    unofficialCurrencyCodeGTE: String
+    unofficialCurrencyCodeHasPrefix: String
+    unofficialCurrencyCodeHasSuffix: String
+    unofficialCurrencyCodeIn: [String!]
+    unofficialCurrencyCodeLT: String
+    unofficialCurrencyCodeLTE: String
+    unofficialCurrencyCodeNEQ: String
+    unofficialCurrencyCodeNotIn: [String!]
+}
+
+"""
+
+UpdateUserInput is used for update User object.
+Input was generated by ent.
+"""
+input UpdateUserInput {
+    clearHomeCity: Boolean
+    clearHomeCountry: Boolean
+    clearHomeState: Boolean
+    homeCity: String
+    homeCountry: String
+    homeState: String
+    offerFrequency: UserOfferFrequency
+}
+
+"""
+
+UpdateUserNotificationChannelPreferencesInput is used for update UserNotificationChannelPreferences object.
+Input was generated by ent.
+"""
+input UpdateUserNotificationChannelPreferencesInput {
+    chanel: UserNotificationChannelPreferencesChanel
+}
+
+"""
+
+UserNotificationChannelPreferencesWhereInput is used for filtering UserNotificationChannelPreferences objects.
+Input was generated by ent.
+"""
+input UserNotificationChannelPreferencesWhereInput {
+    and: [UserNotificationChannelPreferencesWhereInput!]
+    "chanel field predicates"
+    chanel: UserNotificationChannelPreferencesChanel
+    chanelIn: [UserNotificationChannelPreferencesChanel!]
+    chanelNEQ: UserNotificationChannelPreferencesChanel
+    chanelNotIn: [UserNotificationChannelPreferencesChanel!]
+    "chanel_users edge predicates"
+    hasChanelUsers: Boolean
+    hasChanelUsersWith: [UserWhereInput!]
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    not: UserNotificationChannelPreferencesWhereInput
+    or: [UserNotificationChannelPreferencesWhereInput!]
+}
+
+"""
+
+UserWhereInput is used for filtering User objects.
+Input was generated by ent.
+"""
+input UserWhereInput {
+    and: [UserWhereInput!]
+    "available_discount_offers edge predicates"
+    hasAvailableDiscountOffers: Boolean
+    hasAvailableDiscountOffersWith: [DiscountOfferWhereInput!]
+    "notification_channels edge predicates"
+    hasNotificationChannels: Boolean
+    hasNotificationChannelsWith: [UserNotificationChannelPreferencesWhereInput!]
+    "notifications edge predicates"
+    hasNotifications: Boolean
+    hasNotificationsWith: [NotificationWhereInput!]
+    "plaid_items edge predicates"
+    hasPlaidItems: Boolean
+    hasPlaidItemsWith: [PlaidItemWhereInput!]
+    "spending_categories edge predicates"
+    hasSpendingCategories: Boolean
+    hasSpendingCategoriesWith: [SpendingCategoryWhereInput!]
+    "home_city field predicates"
+    homeCity: String
+    homeCityContains: String
+    homeCityContainsFold: String
+    homeCityEqualFold: String
+    homeCityGT: String
+    homeCityGTE: String
+    homeCityHasPrefix: String
+    homeCityHasSuffix: String
+    homeCityIn: [String!]
+    homeCityIsNil: Boolean
+    homeCityLT: String
+    homeCityLTE: String
+    homeCityNEQ: String
+    homeCityNotIn: [String!]
+    homeCityNotNil: Boolean
+    "home_country field predicates"
+    homeCountry: String
+    homeCountryContains: String
+    homeCountryContainsFold: String
+    homeCountryEqualFold: String
+    homeCountryGT: String
+    homeCountryGTE: String
+    homeCountryHasPrefix: String
+    homeCountryHasSuffix: String
+    homeCountryIn: [String!]
+    homeCountryIsNil: Boolean
+    homeCountryLT: String
+    homeCountryLTE: String
+    homeCountryNEQ: String
+    homeCountryNotIn: [String!]
+    homeCountryNotNil: Boolean
+    "home_state field predicates"
+    homeState: String
+    homeStateContains: String
+    homeStateContainsFold: String
+    homeStateEqualFold: String
+    homeStateGT: String
+    homeStateGTE: String
+    homeStateHasPrefix: String
+    homeStateHasSuffix: String
+    homeStateIn: [String!]
+    homeStateIsNil: Boolean
+    homeStateLT: String
+    homeStateLTE: String
+    homeStateNEQ: String
+    homeStateNotIn: [String!]
+    homeStateNotNil: Boolean
+    "id field predicates"
+    id: ID
+    idGT: ID
+    idGTE: ID
+    idIn: [ID!]
+    idLT: ID
+    idLTE: ID
+    idNEQ: ID
+    idNotIn: [ID!]
+    "identity_provider_id field predicates"
+    identityProviderID: String
+    identityProviderIDContains: String
+    identityProviderIDContainsFold: String
+    identityProviderIDEqualFold: String
+    identityProviderIDGT: String
+    identityProviderIDGTE: String
+    identityProviderIDHasPrefix: String
+    identityProviderIDHasSuffix: String
+    identityProviderIDIn: [String!]
+    identityProviderIDIsNil: Boolean
+    identityProviderIDLT: String
+    identityProviderIDLTE: String
+    identityProviderIDNEQ: String
+    identityProviderIDNotIn: [String!]
+    identityProviderIDNotNil: Boolean
+    not: UserWhereInput
+    "offer_frequency field predicates"
+    offerFrequency: UserOfferFrequency
+    offerFrequencyIn: [UserOfferFrequency!]
+    offerFrequencyNEQ: UserOfferFrequency
+    offerFrequencyNotIn: [UserOfferFrequency!]
+    or: [UserWhereInput!]
+}
