@@ -21,6 +21,8 @@ import {createClient, Client} from "graphql-ws";
 import {getMainDefinition} from "@apollo/client/utilities";
 import {Auth0Provider} from "@auth0/auth0-react";
 
+import "./firebase";
+
 const httpLink = new HttpLink({
   uri: config.server.graphQLUrl,
 });
